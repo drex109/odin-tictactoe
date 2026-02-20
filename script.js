@@ -8,19 +8,26 @@ function Gameboard(symbol) {
 }
 Gameboard();
 
-function Player(name, symbol) {
-    this.name = name;
-    this.symbol = symbol;
+function createPlayer(name, symbol) {
+    const playerSymbol = symbol;
+
+    let score = 0;
+    const getScore = () => score;
+    const givePoint = () => score++;
+
+    return { name, playerSymbol, getScore, givePoint }
 }
 
 function playerTurn(board, playerOne, playerTwo) {
-    playerOne = new Player('player 1', 'X');
-    playerTwo = new Player('player 2', 'O');
+    playerOne = createPlayer('player 1', 'X');
+    playerTwo = createPlayer('player 2', 'O');
     console.log(playerOne);
     console.log(playerTwo);
 }
 
-function playGame(board, playerOne, playerTwo) {
+playerTurn()
+
+// function playGame(board, playerOne, playerTwo) {
     
-}
-playGame();
+// }
+// playGame();
