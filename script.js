@@ -1,21 +1,27 @@
-function Gameboard(symbol) {
-    const gameboard = [
-    [' ', ' ', ' ',],
+const gameboard = (() => {
+    const grid = [
     [' ', ' ', ' '],
-    [' ', ' ',' ']
+    [' ', ' ', ' '],
+    [' ', ' ', ' ']
     ];
-    console.log(gameboard.join('\n'))
-}
-Gameboard();
+    const updateBoard = (choice, symbol) => {
+        if (choice === 1) {
+            grid[0][0] = symbol;
+        }
+        console.log(grid.join('\n'))
+    }
+    return { updateBoard }
+    
+})();
 
-function createPlayer(name, symbol) {
-    const playerSymbol = symbol;
+const createPlayer = (name, symbol)  => {
+    // const playerSymbol = symbol;
 
     let score = 0;
     const getScore = () => score;
     const givePoint = () => score++;
 
-    return { name, playerSymbol, getScore, givePoint }
+    return { name, symbol, getScore, givePoint }
 }
 
 function playerTurn(board, playerOne, playerTwo) {
@@ -23,6 +29,8 @@ function playerTurn(board, playerOne, playerTwo) {
     playerTwo = createPlayer('player 2', 'O');
     console.log(playerOne);
     console.log(playerTwo);
+    gameboard.updateBoard(1, playerOne.symbol)
+    gameboard.updateBoard(1, playerTwo.symbol)
 }
 
 playerTurn()
