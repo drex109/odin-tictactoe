@@ -1,22 +1,51 @@
 const gameboard = (() => {
     const grid = [
-    [' ', ' ', ' '],
-    [' ', ' ', ' '],
-    [' ', ' ', ' ']
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
     ];
-    const updateBoard = (choice, symbol) => {
-        if (choice === 1) {
-            grid[0][0] = symbol;
+
+    const placeSymbol = (row, col, symbol) => {
+        if (grid[row][col] === '') {
+            grid[row][col] = symbol;
+        } else {
+            console.log('space already taken');
         }
         console.log(grid.join('\n'))
     }
-    return { updateBoard }
+
+    const resetGrid = () => {
+        for(let row = 0; row < grid.length; row++) {
+            for(let col = 0; col < grid[row].length; col++) {
+                grid[row][col] = '';
+            }
+        }
+        console.log(grid.join('\n'))
+    }
+
+    const winCheck = (row, col) => {
+        if (grid[row][col] !== ' ') {
+            let currentSymbol = grid[row][col];
+            if (grid[row][0] === currentSymbol && 
+                grid[row][1] === currentSymbol && 
+                grid[row][2] === currentSymbol) {
+                return true;
+            } else if (grid[0][col] === currentSymbol && 
+                grid[1][col] === currentSymbol && 
+                grid[2][col] === currentSymbol) {
+                return true;
+            } else if (row === col) {
+
+            } 
+        }
+        return false;
+    }
+    
+    return { placeSymbol, resetGrid }
     
 })();
 
 const createPlayer = (name, symbol)  => {
-    // const playerSymbol = symbol;
-
     let score = 0;
     const getScore = () => score;
     const givePoint = () => score++;
@@ -29,8 +58,11 @@ function playerTurn(board, playerOne, playerTwo) {
     playerTwo = createPlayer('player 2', 'O');
     console.log(playerOne);
     console.log(playerTwo);
-    gameboard.updateBoard(1, playerOne.symbol)
-    gameboard.updateBoard(1, playerTwo.symbol)
+    gameboard.placeSymbol(1, 0, playerOne.symbol)
+    gameboard.placeSymbol(1, 0, playerTwo.symbol)
+    gameboard.placeSymbol(2, 1, playerOne.symbol)
+    gameboard.resetGrid();
+    gameboard.placeSymbol(0, 0, playerTwo.symbol)
 }
 
 playerTurn()
