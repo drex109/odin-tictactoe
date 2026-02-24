@@ -11,7 +11,7 @@ const gameboard = (() => {
         } else {
             console.log('space already taken');
         }
-        console.log(grid.join('\n'))
+        console.log(grid.join('\n'));
     }
 
     const resetGrid = () => {
@@ -20,7 +20,7 @@ const gameboard = (() => {
                 grid[row][col] = '';
             }
         }
-        console.log(grid.join('\n'))
+        console.log(grid.join('\n'));
     }
 
     const winCheck = (row, col) => {
@@ -29,19 +29,35 @@ const gameboard = (() => {
             if (grid[row][0] === currentSymbol && 
                 grid[row][1] === currentSymbol && 
                 grid[row][2] === currentSymbol) {
-                return true;
+                    console.log('win');
+                    return true;
             } else if (grid[0][col] === currentSymbol && 
                 grid[1][col] === currentSymbol && 
                 grid[2][col] === currentSymbol) {
-                return true;
-            } else if (row === col) {
-
+                    console.log('win');
+                    return true;
             } 
+            
+            if (row === col &&
+                grid[0][0] === currentSymbol &&
+                grid[1][1] === currentSymbol &&
+                grid[2][2] === currentSymbol) {
+                    console.log('win');
+                    return true;
+            } 
+
+            if (row + col === 2 &&
+                grid[0][2] === currentSymbol &&
+                grid[1][1] === currentSymbol &&
+                grid[2][0] === currentSymbol) {
+                    console.log('win');
+                    return true;
+            }
         }
         return false;
     }
     
-    return { placeSymbol, resetGrid }
+    return { placeSymbol, resetGrid, winCheck }
     
 })();
 
@@ -62,7 +78,10 @@ function playerTurn(board, playerOne, playerTwo) {
     gameboard.placeSymbol(1, 0, playerTwo.symbol)
     gameboard.placeSymbol(2, 1, playerOne.symbol)
     gameboard.resetGrid();
-    gameboard.placeSymbol(0, 0, playerTwo.symbol)
+    gameboard.placeSymbol(0, 2, playerTwo.symbol)
+    gameboard.placeSymbol(1, 1, playerTwo.symbol)
+    gameboard.placeSymbol(2, 0, playerTwo.symbol)
+    gameboard.winCheck(1, 1)
 }
 
 playerTurn()
