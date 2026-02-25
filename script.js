@@ -24,7 +24,7 @@ const gameboard = (() => {
     }
 
     const winCheck = (row, col) => {
-        if (grid[row][col] !== ' ') {
+        if (grid[row][col] !== '') {
             let currentSymbol = grid[row][col];
             if (grid[row][0] === currentSymbol && 
                 grid[row][1] === currentSymbol && 
@@ -69,24 +69,24 @@ const createPlayer = (name, symbol)  => {
     return { name, symbol, getScore, givePoint }
 }
 
-function playerTurn(board, playerOne, playerTwo) {
-    playerOne = createPlayer('player 1', 'X');
-    playerTwo = createPlayer('player 2', 'O');
-    console.log(playerOne);
-    console.log(playerTwo);
-    gameboard.placeSymbol(1, 0, playerOne.symbol)
-    gameboard.placeSymbol(1, 0, playerTwo.symbol)
-    gameboard.placeSymbol(2, 1, playerOne.symbol)
+const playerOne = createPlayer('player 1', 'X');
+const playerTwo = createPlayer('player 2', 'O');
+
+function playGame(playerOne, playerTwo) {
+    gameboard.placeSymbol(1, 0, playerOne.symbol);
+    gameboard.placeSymbol(1, 0, playerTwo.symbol);
+    gameboard.placeSymbol(2, 1, playerOne.symbol);
     gameboard.resetGrid();
-    gameboard.placeSymbol(0, 2, playerTwo.symbol)
-    gameboard.placeSymbol(1, 1, playerTwo.symbol)
-    gameboard.placeSymbol(2, 0, playerTwo.symbol)
-    gameboard.winCheck(1, 1)
+    gameboard.placeSymbol(0, 2, playerTwo.symbol);
+    gameboard.placeSymbol(1, 1, playerTwo.symbol);
+    gameboard.placeSymbol(2, 0, playerTwo.symbol);
+    gameboard.winCheck(1, 1);
+    playerTwo.givePoint();
+    playerTwo.givePoint();
+    playerTwo.givePoint();
+    playerTwo.givePoint();
+    console.log(playerTwo.getScore())
 }
 
-playerTurn()
+playGame(playerOne, playerTwo);
 
-// function playGame(board, playerOne, playerTwo) {
-    
-// }
-// playGame();
