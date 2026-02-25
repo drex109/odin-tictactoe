@@ -56,10 +56,34 @@ const gameboard = (() => {
         }
         return false;
     }
+
+    const readGrid = () => {
+        return grid;
+    }
     
-    return { placeSymbol, resetGrid, winCheck }
+    return { placeSymbol, resetGrid, winCheck, readGrid }
     
 })();
+
+const boardRender = (gridData) => {
+    const board = document.querySelector('#board');
+
+    board.textContent = '';
+
+    console.log(gridData);
+    for(let row = 0; row < gridData.length; row++) {
+        for(let col = 0; col < gridData[row].length; col++) {
+            const square = document.createElement('div');
+            square.classList.add('square');
+            
+            console.log(gridData[row][col]);
+            square.textContent = gridData[row][col];
+            
+            
+            board.appendChild(square);
+        }
+    }
+};
 
 const createPlayer = (name, symbol)  => {
     let score = 0;
@@ -86,6 +110,7 @@ function playGame(playerOne, playerTwo) {
     playerTwo.givePoint();
     playerTwo.givePoint();
     console.log(playerTwo.getScore())
+    boardRender(gameboard.readGrid())
 }
 
 playGame(playerOne, playerTwo);

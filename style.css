@@ -1,3 +1,26 @@
 * {
     background-color: silver;
 }
+#header{
+    text-align: center;
+}
+#board {
+    width: 45rem;
+    margin: auto;
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    color: white;
+    gap: 1px;
+}
+.square{
+    background-color: black;
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    font-size: 100px;
+}
