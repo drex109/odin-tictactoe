@@ -65,25 +65,28 @@ const gameboard = (() => {
     
 })();
 
-const boardRender = (gridData) => {
-    const board = document.querySelector('#board');
+const displayController = (() => {
 
-    board.textContent = '';
+    const render = (gridData) => {
+        board.textContent = '';
 
-    console.log(gridData);
-    for(let row = 0; row < gridData.length; row++) {
-        for(let col = 0; col < gridData[row].length; col++) {
-            const square = document.createElement('div');
-            square.classList.add('square');
-            
-            console.log(gridData[row][col]);
-            square.textContent = gridData[row][col];
-            
-            
-            board.appendChild(square);
+        console.log(gridData);
+        for(let row = 0; row < gridData.length; row++) {
+            for(let col = 0; col < gridData[row].length; col++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                
+                console.log(gridData[row][col]);
+                square.textContent = gridData[row][col];
+                
+                
+                board.appendChild(square);
+            }
         }
-    }
-};
+    };
+    
+    return { render }
+})()
 
 const createPlayer = (name, symbol)  => {
     let score = 0;
@@ -110,7 +113,7 @@ function playGame(playerOne, playerTwo) {
     playerTwo.givePoint();
     playerTwo.givePoint();
     console.log(playerTwo.getScore())
-    boardRender(gameboard.readGrid())
+    displayController.render(gameboard.readGrid())
 }
 
 playGame(playerOne, playerTwo);
