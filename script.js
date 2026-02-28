@@ -84,8 +84,21 @@ const displayController = (() => {
             }
         }
     };
+
+    const showWinMessage = (row, col) => {
+        const messageElem = document.querySelector('#message');
+        const message = document.createElement('h1');
+        
+        if (gameboard.winCheck(row, col)) {
+            message.textContent = 'win'
+        } else {
+            message.textContent = 'no win'
+        }
+
+    messageElem.appendChild(message)
+    }
     
-    return { render }
+    return { render, showWinMessage }
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -113,7 +126,15 @@ function playGame(playerOne, playerTwo) {
     playerTwo.givePoint();
     playerTwo.givePoint();
     console.log(playerTwo.getScore())
+    
     displayController.render(gameboard.readGrid())
+    gameboard.resetGrid();
+    displayController.render(gameboard.readGrid())
+    
+    gameboard.placeSymbol(1, 2, playerOne.symbol);
+    displayController.render(gameboard.readGrid());
+    gameboard.winCheck(1, 2);
+    displayController.showWinMessage(1, 2);
 }
 
 playGame(playerOne, playerTwo);
