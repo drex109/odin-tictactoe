@@ -12,7 +12,6 @@
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
     align-items: center;
-    color: white;
     gap: 1px;
 }
 .square{
@@ -23,4 +22,11 @@
     align-items: center;
     justify-items: center;
     font-size: 100px;
+    color: white;
+}
+.square:hover{
+    background-color: rgb(34, 34, 34);
+}
+.square:active{
+    background-color: black;
 }

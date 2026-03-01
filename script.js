@@ -73,7 +73,7 @@ const displayController = (() => {
         console.log(gridData);
         for(let row = 0; row < gridData.length; row++) {
             for(let col = 0; col < gridData[row].length; col++) {
-                const square = document.createElement('div');
+                const square = document.createElement('button');
                 square.classList.add('square');
                 
                 console.log(gridData[row][col]);
@@ -92,7 +92,7 @@ const displayController = (() => {
         if (gameboard.winCheck(row, col)) {
             message.textContent = 'win'
         } else {
-            message.textContent = 'no win'
+            message.textContent = 'no win found'
         }
 
     messageElem.appendChild(message)
@@ -113,28 +113,32 @@ const playerOne = createPlayer('player 1', 'X');
 const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
-    gameboard.placeSymbol(1, 0, playerOne.symbol);
-    gameboard.placeSymbol(1, 0, playerTwo.symbol);
-    gameboard.placeSymbol(2, 1, playerOne.symbol);
-    gameboard.resetGrid();
-    gameboard.placeSymbol(0, 2, playerTwo.symbol);
-    gameboard.placeSymbol(1, 1, playerTwo.symbol);
-    gameboard.placeSymbol(2, 0, playerTwo.symbol);
-    gameboard.winCheck(1, 1);
-    playerTwo.givePoint();
-    playerTwo.givePoint();
-    playerTwo.givePoint();
-    playerTwo.givePoint();
-    console.log(playerTwo.getScore())
+    // gameboard.placeSymbol(1, 0, playerOne.symbol);
+    // gameboard.placeSymbol(1, 0, playerTwo.symbol);
+    // gameboard.placeSymbol(2, 1, playerOne.symbol);
+    // gameboard.resetGrid();
+    // gameboard.placeSymbol(0, 2, playerTwo.symbol);
+    // gameboard.placeSymbol(1, 1, playerTwo.symbol);
+    // gameboard.placeSymbol(2, 0, playerTwo.symbol);
+    // gameboard.winCheck(1, 1);
+    // playerTwo.givePoint();
+    // playerTwo.givePoint();
+    // playerTwo.givePoint();
+    // playerTwo.givePoint();
+    // console.log(playerTwo.getScore())
+    
+    // displayController.render(gameboard.readGrid())
+    // gameboard.resetGrid();
+    // displayController.render(gameboard.readGrid())
+    
+    // gameboard.placeSymbol(1, 2, playerOne.symbol);
+    // displayController.render(gameboard.readGrid());
+    // gameboard.winCheck(1, 2);
+    // displayController.showWinMessage(1, 2);
     
     displayController.render(gameboard.readGrid())
-    gameboard.resetGrid();
-    displayController.render(gameboard.readGrid())
+
     
-    gameboard.placeSymbol(1, 2, playerOne.symbol);
-    displayController.render(gameboard.readGrid());
-    gameboard.winCheck(1, 2);
-    displayController.showWinMessage(1, 2);
 }
 
 playGame(playerOne, playerTwo);
