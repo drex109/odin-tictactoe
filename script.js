@@ -45,7 +45,7 @@ const gameboard = (() => {
                     console.log('win');
                     return true;
             } 
-            // Doesn't display message upon reverse diagnol. Why?
+
             if (row + col === 2 &&
                 grid[0][2] === currentSymbol &&
                 grid[1][1] === currentSymbol &&
@@ -78,7 +78,7 @@ const displayController = (() => {
                 square.setAttribute('data-row', row);
                 square.setAttribute('data-col', col);
                 
-                console.log(gridData[row][col]);
+                // console.log(gridData[row][col]);
                 square.textContent = gridData[row][col];
                 
                 
@@ -140,27 +140,24 @@ function playGame(playerOne, playerTwo) {
     
     displayController.render(gameboard.readGrid())
 
-    const squares = document.querySelectorAll('.square');
-    console.log(squares)
-    
-    for(let i = 0; i < squares.length; i++) {
-        const square = squares[i];
-        console.log(square);
-        square.addEventListener('click', () => {
-            const row = square.dataset.row;
-            const col = square.dataset.col;
-            console.log(row);
-            console.log(col);
+    const board = document.querySelector('#board');
+    console.log(board)
+        
+    board.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('square')) return;
+        
+        const row = Number(e.target.dataset.row);
+        const col = Number(e.target.dataset.col);
+        console.log(row);
+        console.log(col);
 
-            gameboard.placeSymbol(row, col, playerOne.symbol);
-            gameboard.winCheck(row, col);
+        gameboard.placeSymbol(row, col, playerOne.symbol);
+        gameboard.winCheck(row, col);
             
-            // displayController.render(gameboard.readGrid())
-            // this ruins the loop. Why? Is targeting the squares the wrong solution?
-        });
-    }
-
+        displayController.render(gameboard.readGrid())
+    });
 }
+
 
 playGame(playerOne, playerTwo);
 
