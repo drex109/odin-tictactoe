@@ -73,7 +73,7 @@ const displayController = (() => {
         console.log(gridData);
         for(let row = 0; row < gridData.length; row++) {
             for(let col = 0; col < gridData[row].length; col++) {
-                const square = document.createElement('button');
+                const square = document.createElement('div');
                 square.classList.add('square');
                 square.setAttribute('data-row', row);
                 square.setAttribute('data-col', col);
@@ -90,14 +90,15 @@ const displayController = (() => {
     const showWinMessage = (row, col) => {
         const messageElem = document.querySelector('#message');
         const message = document.createElement('h1');
-        
+        messageElem.appendChild(message);
+
         if (gameboard.winCheck(row, col)) {
             message.textContent = 'win'
         } else {
-            message.textContent = 'no win found'
+            message.textContent = ''
         }
 
-    messageElem.appendChild(message)
+        
     }
     
     return { render, showWinMessage }
@@ -140,21 +141,32 @@ function playGame(playerOne, playerTwo) {
     
     displayController.render(gameboard.readGrid())
 
+    let playerTurn = true;
+    let symbol;
+
     const board = document.querySelector('#board');
-    console.log(board)
-        
     board.addEventListener('click', (e) => {
         if (!e.target.classList.contains('square')) return;
         
+        if (playerTurn) {
+            symbol = playerOne.symbol;
+            playerTurn = false;
+        } else{
+            symbol = playerTwo.symbol;
+            playerTurn = true;
+        }
+
         const row = Number(e.target.dataset.row);
         const col = Number(e.target.dataset.col);
         console.log(row);
         console.log(col);
 
-        gameboard.placeSymbol(row, col, playerOne.symbol);
+        gameboard.placeSymbol(row, col, symbol);
         gameboard.winCheck(row, col);
-            
+        
+        displayController.showWinMessage(row, col);
         displayController.render(gameboard.readGrid())
+        
     });
 }
 
