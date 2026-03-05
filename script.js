@@ -87,13 +87,14 @@ const displayController = (() => {
         }
     };
 
-    const showWinMessage = (row, col) => {
+    const showWinMessage = (row, col, player) => {
         const messageElem = document.querySelector('#message');
         const message = document.createElement('h1');
         messageElem.appendChild(message);
+        console.log(player)
 
         if (gameboard.winCheck(row, col)) {
-            message.textContent = 'win'
+            message.textContent = `${player} wins the round!`
         } else {
             message.textContent = ''
         }
@@ -116,43 +117,20 @@ const playerOne = createPlayer('player 1', 'X');
 const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
-    // gameboard.placeSymbol(1, 0, playerOne.symbol);
-    // gameboard.placeSymbol(1, 0, playerTwo.symbol);
-    // gameboard.placeSymbol(2, 1, playerOne.symbol);
-    // gameboard.resetGrid();
-    // gameboard.placeSymbol(0, 2, playerTwo.symbol);
-    // gameboard.placeSymbol(1, 1, playerTwo.symbol);
-    // gameboard.placeSymbol(2, 0, playerTwo.symbol);
-    // gameboard.winCheck(1, 1);
-    // playerTwo.givePoint();
-    // playerTwo.givePoint();
-    // playerTwo.givePoint();
-    // playerTwo.givePoint();
-    // console.log(playerTwo.getScore())
-    
-    // displayController.render(gameboard.readGrid())
-    // gameboard.resetGrid();
-    // displayController.render(gameboard.readGrid())
-    
-    // gameboard.placeSymbol(1, 2, playerOne.symbol);
-    // displayController.render(gameboard.readGrid());
-    // gameboard.winCheck(1, 2);
-    // displayController.showWinMessage(1, 2);
-    
     displayController.render(gameboard.readGrid())
 
     let playerTurn = true;
-    let symbol;
+    let currentPlayer;
 
     const board = document.querySelector('#board');
     board.addEventListener('click', (e) => {
         if (!e.target.classList.contains('square')) return;
         
         if (playerTurn) {
-            symbol = playerOne.symbol;
+            currentPlayer = playerOne;
             playerTurn = false;
         } else{
-            symbol = playerTwo.symbol;
+            currentPlayer = playerTwo;
             playerTurn = true;
         }
 
@@ -160,11 +138,12 @@ function playGame(playerOne, playerTwo) {
         const col = Number(e.target.dataset.col);
         console.log(row);
         console.log(col);
+        console.log(currentPlayer.name)
 
-        gameboard.placeSymbol(row, col, symbol);
+        gameboard.placeSymbol(row, col, currentPlayer.symbol);
         gameboard.winCheck(row, col);
         
-        displayController.showWinMessage(row, col);
+        displayController.showWinMessage(row, col, currentPlayer.name);
         displayController.render(gameboard.readGrid())
         
     });
