@@ -92,7 +92,7 @@ const displayController = (() => {
         const message = document.createElement('h1');
         messageElem.appendChild(message);
         console.log(player)
-
+        
         if (gameboard.winCheck(row, col)) {
             message.textContent = `${player} wins the round!`
         } else {
@@ -120,17 +120,27 @@ function playGame(playerOne, playerTwo) {
     displayController.render(gameboard.readGrid())
 
     let playerTurn = true;
-    let currentPlayer;
+    let currentPlayer = playerOne;
 
     const board = document.querySelector('#board');
+    const messageElem = document.querySelector('#message');
+    const statusMessage = document.createElement('h3');
+
+    statusMessage.textContent = `${currentPlayer.name}'s turn`
+    messageElem.appendChild(statusMessage);
+
     board.addEventListener('click', (e) => {
         if (!e.target.classList.contains('square')) return;
         
         if (playerTurn) {
             currentPlayer = playerOne;
+            statusMessage.textContent = `${playerTwo.name}'s turn`
+            messageElem.appendChild(statusMessage);
             playerTurn = false;
         } else{
             currentPlayer = playerTwo;
+            statusMessage.textContent = `${playerOne.name}'s turn`
+            messageElem.appendChild(statusMessage);
             playerTurn = true;
         }
 
@@ -142,11 +152,12 @@ function playGame(playerOne, playerTwo) {
 
         gameboard.placeSymbol(row, col, currentPlayer.symbol);
         gameboard.winCheck(row, col);
-        
+
         displayController.showWinMessage(row, col, currentPlayer.name);
         displayController.render(gameboard.readGrid())
         
     });
+    
 }
 
 
