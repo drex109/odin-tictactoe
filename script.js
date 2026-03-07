@@ -61,7 +61,7 @@ const gameboard = (() => {
         return grid;
     }
     
-    return { placeSymbol, resetGrid, winCheck, readGrid }
+    return { placeSymbol, resetGrid, winCheck, readGrid };
     
 })();
 
@@ -70,7 +70,6 @@ const displayController = (() => {
     const render = (gridData) => {
         board.textContent = '';
 
-        console.log(gridData);
         for(let row = 0; row < gridData.length; row++) {
             for(let col = 0; col < gridData[row].length; col++) {
                 const square = document.createElement('div');
@@ -78,31 +77,38 @@ const displayController = (() => {
                 square.setAttribute('data-row', row);
                 square.setAttribute('data-col', col);
                 
-                // console.log(gridData[row][col]);
                 square.textContent = gridData[row][col];
-                
                 
                 board.appendChild(square);
             }
         }
     };
 
+    const messageElem = document.querySelector('#message');
+    
     const showWinMessage = (row, col, player) => {
-        const messageElem = document.querySelector('#message');
         const message = document.createElement('h1');
         messageElem.appendChild(message);
-        console.log(player)
         
         if (gameboard.winCheck(row, col)) {
             message.textContent = `${player} wins the round!`
         } else {
             message.textContent = ''
         }
+    }
 
-        
+    const showStatusMessage = (playerTurn) => {
+        const statusMessage = document.createElement('h2');
+
+        if (playerTurn) {
+            statusMessage.textContent = `${playerOne.name}'s turn`;
+        } else {
+            statusMessage.textContent = `${playerTwo.name}'s turn`;
+        }
+        messageElem.replaceChildren(statusMessage);
     }
     
-    return { render, showWinMessage }
+    return { render, showWinMessage, showStatusMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -118,41 +124,33 @@ const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
     displayController.render(gameboard.readGrid())
+    
 
     let playerTurn = true;
     let currentPlayer = playerOne;
+    
+    displayController.showStatusMessage(playerTurn);
 
     const board = document.querySelector('#board');
-    const messageElem = document.querySelector('#message');
-    const statusMessage = document.createElement('h3');
-
-    statusMessage.textContent = `${currentPlayer.name}'s turn`
-    messageElem.appendChild(statusMessage);
-
+    
     board.addEventListener('click', (e) => {
         if (!e.target.classList.contains('square')) return;
         
         if (playerTurn) {
             currentPlayer = playerOne;
-            statusMessage.textContent = `${playerTwo.name}'s turn`
-            messageElem.appendChild(statusMessage);
             playerTurn = false;
         } else{
             currentPlayer = playerTwo;
-            statusMessage.textContent = `${playerOne.name}'s turn`
-            messageElem.appendChild(statusMessage);
             playerTurn = true;
         }
 
         const row = Number(e.target.dataset.row);
         const col = Number(e.target.dataset.col);
-        console.log(row);
-        console.log(col);
-        console.log(currentPlayer.name)
 
         gameboard.placeSymbol(row, col, currentPlayer.symbol);
         gameboard.winCheck(row, col);
 
+        displayController.showStatusMessage(playerTurn);
         displayController.showWinMessage(row, col, currentPlayer.name);
         displayController.render(gameboard.readGrid())
         
