@@ -8,10 +8,13 @@ const gameboard = (() => {
     const placeSymbol = (row, col, symbol) => {
         if (grid[row][col] === '') {
             grid[row][col] = symbol;
+            console.log(grid.join('\n'));
+            return true;
         } else {
             console.log('space already taken');
+            console.log(grid.join('\n'));
+            return false;
         }
-        console.log(grid.join('\n'));
     }
 
     const resetGrid = () => {
@@ -58,7 +61,7 @@ const gameboard = (() => {
     }
 
     const readGrid = () => {
-        return grid;
+        return [...grid];
     }
     
     return { placeSymbol, resetGrid, winCheck, readGrid };
@@ -97,15 +100,12 @@ const displayController = (() => {
         }
     }
 
-    const showStatusMessage = (playerTurn) => {
+    const showStatusMessage = (currentPlayer) => {
         const statusMessage = document.createElement('h2');
-
-        if (playerTurn) {
-            statusMessage.textContent = `${playerOne.name}'s turn`;
-        } else {
-            statusMessage.textContent = `${playerTwo.name}'s turn`;
-        }
-        messageElem.replaceChildren(statusMessage);
+        
+        statusMessage.textContent = `${currentPlayer.name}'s turn`;
+        
+        messageElem.appendChild(statusMessage);
     }
     
     return { render, showWinMessage, showStatusMessage };
@@ -124,40 +124,32 @@ const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
     displayController.render(gameboard.readGrid())
-    
 
-    let playerTurn = true;
     let currentPlayer = playerOne;
     
-    displayController.showStatusMessage(playerTurn);
+    displayController.showStatusMessage(currentPlayer);
 
     const board = document.querySelector('#board');
     
     board.addEventListener('click', (e) => {
         if (!e.target.classList.contains('square')) return;
-        
-        if (playerTurn) {
-            currentPlayer = playerOne;
-            playerTurn = false;
-        } else{
-            currentPlayer = playerTwo;
-            playerTurn = true;
-        }
 
         const row = Number(e.target.dataset.row);
         const col = Number(e.target.dataset.col);
+        
+        if (!gameboard.placeSymbol(row, col, currentPlayer.symbol)) return;
+        
+        if (gameboard.winCheck(row, col)) {
+            displayController.showWinMessage(row, col, currentPlayer.name);
+        }
 
-        gameboard.placeSymbol(row, col, currentPlayer.symbol);
-        gameboard.winCheck(row, col);
-
-        displayController.showStatusMessage(playerTurn);
-        displayController.showWinMessage(row, col, currentPlayer.name);
-        displayController.render(gameboard.readGrid())
+        currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
+        
+        displayController.render(gameboard.readGrid());
+        displayController.showStatusMessage(currentPlayer);
         
     });
-    
 }
-
 
 playGame(playerOne, playerTwo);
 
