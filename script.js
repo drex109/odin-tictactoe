@@ -89,21 +89,17 @@ const displayController = (() => {
 
     const messageElem = document.querySelector('#message');
     
-    const showWinMessage = (row, col, player) => {
+    const showWinMessage = (player) => {
         const message = document.createElement('h1');
         messageElem.appendChild(message);
         
-        if (gameboard.winCheck(row, col)) {
-            message.textContent = `${player} wins the round!`
-        } else {
-            message.textContent = ''
-        }
+        message.textContent = `${player.name} wins the round!`
     }
 
-    const showStatusMessage = (currentPlayer) => {
+    const showStatusMessage = (player) => {
         const statusMessage = document.createElement('h2');
         
-        statusMessage.textContent = `${currentPlayer.name}'s turn`;
+        statusMessage.textContent = `${player.name}'s turn`;
         
         messageElem.appendChild(statusMessage);
     }
@@ -123,6 +119,7 @@ const playerOne = createPlayer('player 1', 'X');
 const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
+    let roundActive = true;
     displayController.render(gameboard.readGrid())
 
     let currentPlayer = playerOne;
@@ -136,16 +133,22 @@ function playGame(playerOne, playerTwo) {
 
         const row = Number(e.target.dataset.row);
         const col = Number(e.target.dataset.col);
-        
+
+        if (!roundActive) return;
         if (!gameboard.placeSymbol(row, col, currentPlayer.symbol)) return;
         
+        displayController.render(gameboard.readGrid());
+
         if (gameboard.winCheck(row, col)) {
-            displayController.showWinMessage(row, col, currentPlayer.name);
+            displayController.showWinMessage(currentPlayer);
+            roundActive = false;
+            return;
         }
 
-        currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
+        currentPlayer === playerOne ?
+        currentPlayer = playerTwo : 
+        currentPlayer = playerOne;
         
-        displayController.render(gameboard.readGrid());
         displayController.showStatusMessage(currentPlayer);
         
     });
