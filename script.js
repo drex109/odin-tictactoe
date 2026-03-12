@@ -87,21 +87,25 @@ const displayController = (() => {
         }
     };
 
-    const messageElem = document.querySelector('#message');
-    
     const showWinMessage = (player) => {
-        const message = document.createElement('h1');
-        messageElem.appendChild(message);
+        const winMessageElem = document.querySelector('#win-message');
+        const winMessage = document.createElement('h1');
+        winMessageElem.appendChild(winMessage);
         
-        message.textContent = `${player.name} wins the round!`
+        winMessage.textContent = `${player.name} wins the round!`
     }
 
-    const showStatusMessage = (player) => {
+    const showStatusMessage = (player, gridData) => {
+        const statusMessageElem = document.querySelector('#status-message')
         const statusMessage = document.createElement('h2');
+        console.log(gridData.flat().includes(''))
+        if (gridData.flat().includes('')) {
+            statusMessage.textContent = `${player.name}'s turn`;
+        } else {
+            statusMessage.textContent = `Draw!`
+        }
         
-        statusMessage.textContent = `${player.name}'s turn`;
-        
-        messageElem.appendChild(statusMessage);
+        statusMessageElem.replaceChildren(statusMessage);
     }
     
     return { render, showWinMessage, showStatusMessage };
@@ -124,7 +128,7 @@ function playGame(playerOne, playerTwo) {
 
     let currentPlayer = playerOne;
     
-    displayController.showStatusMessage(currentPlayer);
+    displayController.showStatusMessage(currentPlayer, gameboard.readGrid());
 
     const board = document.querySelector('#board');
     
@@ -149,7 +153,7 @@ function playGame(playerOne, playerTwo) {
         currentPlayer = playerTwo : 
         currentPlayer = playerOne;
         
-        displayController.showStatusMessage(currentPlayer);
+        displayController.showStatusMessage(currentPlayer, gameboard.readGrid());
         
     });
 }

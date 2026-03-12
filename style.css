@@ -32,7 +32,7 @@
 .square:active{
     background-color: black;
 }
-#message{
+#status-message, #win-message{
     text-align: center;
     height: 0px;
     padding: 1rem;
