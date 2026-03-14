@@ -69,6 +69,8 @@ const gameboard = (() => {
 })();
 
 const displayController = (() => {
+    
+    const board = document.querySelector('#board');
 
     const render = (gridData) => {
         board.textContent = '';
@@ -90,25 +92,31 @@ const displayController = (() => {
     const showWinMessage = (player) => {
         const winMessageElem = document.querySelector('#win-message');
         const winMessage = document.createElement('h1');
-        winMessageElem.appendChild(winMessage);
         
-        winMessage.textContent = `${player.name} wins the round!`
+        winMessage.textContent = `${player.name} wins the round!`;
+
+        winMessageElem.replaceChildren(winMessage);
+    }
+    
+    const statusMessageElem = document.querySelector('#status-message')
+    
+    const showDrawMessage = () => {
+        const drawMessage = document.createElement('h1');
+
+        drawMessage.textContent = 'Draw!';
+
+        statusMessageElem.replaceChildren(drawMessage);
     }
 
-    const showStatusMessage = (player, gridData) => {
-        const statusMessageElem = document.querySelector('#status-message')
+    const showStatusMessage = (player) => {
         const statusMessage = document.createElement('h2');
-        console.log(gridData.flat().includes(''))
-        if (gridData.flat().includes('')) {
-            statusMessage.textContent = `${player.name}'s turn`;
-        } else {
-            statusMessage.textContent = `Draw!`
-        }
+        
+        statusMessage.textContent = `${player.name}'s turn`;
         
         statusMessageElem.replaceChildren(statusMessage);
     }
     
-    return { render, showWinMessage, showStatusMessage };
+    return { render, showWinMessage, showDrawMessage, showStatusMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -124,11 +132,13 @@ const playerTwo = createPlayer('player 2', 'O');
 
 function playGame(playerOne, playerTwo) {
     let roundActive = true;
+    let movesPlayed = 0;
+    
     displayController.render(gameboard.readGrid())
 
     let currentPlayer = playerOne;
     
-    displayController.showStatusMessage(currentPlayer, gameboard.readGrid());
+    displayController.showStatusMessage(currentPlayer);
 
     const board = document.querySelector('#board');
     
@@ -141,10 +151,17 @@ function playGame(playerOne, playerTwo) {
         if (!roundActive) return;
         if (!gameboard.placeSymbol(row, col, currentPlayer.symbol)) return;
         
+        movesPlayed++;
+        
         displayController.render(gameboard.readGrid());
 
         if (gameboard.winCheck(row, col)) {
             displayController.showWinMessage(currentPlayer);
+            roundActive = false;
+            return;
+        }
+        if (movesPlayed === 9) {
+            displayController.showDrawMessage();
             roundActive = false;
             return;
         }
@@ -153,8 +170,9 @@ function playGame(playerOne, playerTwo) {
         currentPlayer = playerTwo : 
         currentPlayer = playerOne;
         
-        displayController.showStatusMessage(currentPlayer, gameboard.readGrid());
+        displayController.showStatusMessage(currentPlayer);
         
+        console.log(movesPlayed);
     });
 }
 
