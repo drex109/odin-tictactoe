@@ -115,8 +115,25 @@ const displayController = (() => {
         
         statusMessageElem.replaceChildren(statusMessage);
     }
+
+    const resetUI = (gridData) => {
+        board.textContent = '';
+
+        for(let row = 0; row < gridData.length; row++) {
+            for(let col = 0; col < gridData[row].length; col++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                square.setAttribute('data-row', row);
+                square.setAttribute('data-col', col);
+                
+                square.textContent = '';
+                
+                board.appendChild(square);
+            }
+        }
+    }
     
-    return { render, showWinMessage, showDrawMessage, showStatusMessage };
+    return { render, showWinMessage, showDrawMessage, showStatusMessage, resetUI };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -174,6 +191,14 @@ function playGame(playerOne, playerTwo) {
         
         console.log(movesPlayed);
     });
+
+    const resetButton = document.querySelector('#reset-button');
+
+    resetButton.addEventListener('click', () => {
+        gameboard.resetGrid();
+        displayController.resetUI(gameboard.readGrid());
+        movesPlayed = 0;
+    })
 }
 
 playGame(playerOne, playerTwo);
