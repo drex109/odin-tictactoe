@@ -117,25 +117,11 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(statusMessage);
     }
 
-    const resetUI = (gridData) => {
-        board.textContent = '';
-        winMessageElem.replaceChildren('');
-
-        for(let row = 0; row < gridData.length; row++) {
-            for(let col = 0; col < gridData[row].length; col++) {
-                const square = document.createElement('div');
-                square.classList.add('square');
-                square.setAttribute('data-row', row);
-                square.setAttribute('data-col', col);
-                
-                square.textContent = '';
-                
-                board.appendChild(square);
-            }
-        }
+    const clearWinMessage = () => {
+        winMessageElem.replaceChildren();
     }
     
-    return { render, showWinMessage, showDrawMessage, showStatusMessage, resetUI };
+    return { render, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -153,65 +139,73 @@ const gameController = (() => {
     let roundActive;
     let movesPlayed;
     let currentPlayer;
+    let playerOne;
+    let playerTwo;
 
-    const playGame = (playerOne, playerTwo) => {
+    const board = document.querySelector('#board');
+    const resetButton = document.querySelector('#reset-button');
+
+    const init = (p1, p2) => {
+        playerOne = p1;
+        playerTwo = p2;
+
         roundActive = true;
         movesPlayed = 0;
         currentPlayer = playerOne;
         
         displayController.render(gameboard.readGrid());
         displayController.showStatusMessage(currentPlayer);
+        board.addEventListener('click', boardClick);
+        resetButton.addEventListener('click', resetGame);
+    };
 
-        const board = document.querySelector('#board');
+    const boardClick = (e) => {
+        if (!e.target.classList.contains('square')) return;
         
-        board.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('square')) return;
+        const row = Number(e.target.dataset.row);
+        const col = Number(e.target.dataset.col);
+        
+        if (!roundActive) return;
+        if (!gameboard.placeSymbol(row, col, currentPlayer.symbol)) return;
+        
+        movesPlayed++;
+        displayController.render(gameboard.readGrid());
 
-            const row = Number(e.target.dataset.row);
-            const col = Number(e.target.dataset.col);
+        if (gameboard.winCheck(row, col)) {
+            displayController.showWinMessage(currentPlayer);
+            roundActive = false;
+            return;
+        }
 
-            if (!roundActive) return;
-            if (!gameboard.placeSymbol(row, col, currentPlayer.symbol)) return;
-            
-            movesPlayed++;
-            
-            displayController.render(gameboard.readGrid());
+        if (movesPlayed === 9) {
+            displayController.showDrawMessage();
+            roundActive = false;
+            return;
+        }
+        
+        currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        
+        displayController.showStatusMessage(currentPlayer);
+        
+        console.log(movesPlayed);
+    };
 
-            if (gameboard.winCheck(row, col)) {
-                displayController.showWinMessage(currentPlayer);
-                roundActive = false;
-                return;
-            }
-            if (movesPlayed === 9) {
-                displayController.showDrawMessage();
-                roundActive = false;
-                return;
-            }
-
-            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-            
-            displayController.showStatusMessage(currentPlayer);
-            
-            console.log(movesPlayed);
-        });
-    }
 
     const resetGame = () => {
-        const resetButton = document.querySelector('#reset-button');
+        gameboard.resetGrid();
+        displayController.render(gameboard.readGrid());
+        displayController.clearWinMessage();
 
-        resetButton.addEventListener('click', () => {
-            gameboard.resetGrid();
-            displayController.resetUI(gameboard.readGrid());
-            roundActive = true;
-            movesPlayed = 0;
-            currentPlayer = playerOne;
-        });
+        roundActive = true;
+        movesPlayed = 0;
+        currentPlayer = playerOne;
+        
+        displayController.showStatusMessage(currentPlayer);
     }
 
-    return { playGame, resetGame };
+    return { init };
 })();
 
 
-gameController.playGame(playerOne, playerTwo);
-gameController.resetGame();
+gameController.init(playerOne, playerTwo);
 

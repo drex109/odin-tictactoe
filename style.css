@@ -46,7 +46,14 @@
     font-size: 16px;
     font-weight: bold;
     border-radius: 1rem;
-    background-color: red;
+    background-color: rgb(201, 73, 73);
+}
+#play-button{
+    padding: 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 1rem;
+    background-color: rgb(73, 201, 73);
 }
 #status-message, #win-message{
     text-align: center;
