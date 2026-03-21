@@ -16,8 +16,25 @@
     </div>
     <div id="buttons">
         <button id="reset-button">Reset</button>
-        <button id="play-button">Play</button>
+        <button id="open-dialog">Play</button>
     </div>
+
+    <dialog>
+        <form id="player-info" method="dialog">
+            <div class="inputs">
+                <label for="player-one-name">Player One Name:</label>
+                <input id="player-one-name" name="player-one-name" type="text" required>
+            </div>
+            <div class="inputs">
+                <label for="player-one-symbol">Player One Symbol:</label>
+                <input id="player-one-symbol" name="player-one-symbol" type="text" maxlength="1" required>
+            </div>
+            <div id="form-buttons">
+                <button id="start-game" type="submit">Start Game</button>
+                <button id="close-dialog">Close</button>
+            </div>
+        </form>
+    </dialog>
 
     <div id="status-message">
         

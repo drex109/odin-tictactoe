@@ -144,6 +144,24 @@ const gameController = (() => {
 
     const board = document.querySelector('#board');
     const resetButton = document.querySelector('#reset-button');
+    
+    const dialog = document.querySelector('dialog');
+    const openDialog = document.querySelector('#open-dialog');
+    const closeDialog = document.querySelector('#close-dialog');
+
+    openDialog.addEventListener('click', () => {
+        dialog.showModal()
+    });
+    closeDialog.addEventListener('click', () => {
+        dialog.close()
+    });
+
+    displayController.render(gameboard.readGrid());
+
+
+    const playGame = () => {
+
+    }
 
     const init = (p1, p2) => {
         playerOne = p1;
@@ -207,5 +225,5 @@ const gameController = (() => {
 })();
 
 
-gameController.init(playerOne, playerTwo);
+// gameController.init(playerOne, playerTwo);
 
