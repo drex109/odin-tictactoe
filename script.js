@@ -132,8 +132,8 @@ const createPlayer = (name, symbol)  => {
     return { name, symbol, getScore, givePoint }
 }
 
-const playerOne = createPlayer('player 1', 'X');
-const playerTwo = createPlayer('player 2', 'O');
+// const playerOne = createPlayer('player 1', 'X');
+// const playerTwo = createPlayer('player 2', 'O');
 
 const gameController = (() => {
     let roundActive;
@@ -148,6 +148,7 @@ const gameController = (() => {
     const dialog = document.querySelector('dialog');
     const openDialog = document.querySelector('#open-dialog');
     const closeDialog = document.querySelector('#close-dialog');
+    const form = document.querySelector('#player-info');
 
     openDialog.addEventListener('click', () => {
         dialog.showModal()
@@ -156,12 +157,23 @@ const gameController = (() => {
         dialog.close()
     });
 
-    displayController.render(gameboard.readGrid());
+    form.addEventListener('submit', (e) => {
+        // e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+        console.log(data.playerOneName);
+        board.classList.add('board-active');
+
+        init(
+            createPlayer(data.playerOneName, data.playerOneSymbol),
+            createPlayer(data.playerTwoName, data.playerTwoSymbol)
+        );
+    });
+    // displayController.render(gameboard.readGrid());
 
 
-    const playGame = () => {
-
-    }
+    // const playGame = (e) => {
+        
+    // }
 
     const init = (p1, p2) => {
         playerOne = p1;
@@ -221,7 +233,7 @@ const gameController = (() => {
         displayController.showStatusMessage(currentPlayer);
     }
 
-    return { init };
+    // return { init };
 })();
 
 

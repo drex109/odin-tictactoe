@@ -21,14 +21,25 @@
 
     <dialog>
         <form id="player-info" method="dialog">
+
             <div class="inputs">
                 <label for="player-one-name">Player One Name:</label>
-                <input id="player-one-name" name="player-one-name" type="text" required>
+                <input id="player-one-name" name="playerOneName" type="text" required>
             </div>
             <div class="inputs">
                 <label for="player-one-symbol">Player One Symbol:</label>
-                <input id="player-one-symbol" name="player-one-symbol" type="text" maxlength="1" required>
+                <input id="player-one-symbol" name="playerOneSymbol" type="text" maxlength="1" required>
             </div>
+
+            <div class="inputs">
+                <label for="player-two-name">Player Two Name:</label>
+                <input id="player-two-name" name="playerTwoName" type="text" required>
+            </div>
+            <div class="inputs">
+                <label for="player-two-symbol">Player Two Symbol:</label>
+                <input id="player-two-symbol" name="playerTwoSymbol" type="text" maxlength="1" required>
+            </div>
+
             <div id="form-buttons">
                 <button id="start-game" type="submit">Start Game</button>
                 <button id="close-dialog">Close</button>
