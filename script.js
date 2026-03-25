@@ -132,9 +132,6 @@ const createPlayer = (name, symbol)  => {
     return { name, symbol, getScore, givePoint }
 }
 
-// const playerOne = createPlayer('player 1', 'X');
-// const playerTwo = createPlayer('player 2', 'O');
-
 const gameController = (() => {
     let roundActive;
     let movesPlayed;
@@ -143,8 +140,12 @@ const gameController = (() => {
     let playerTwo;
 
     const board = document.querySelector('#board');
-    const resetButton = document.querySelector('#reset-button');
     
+    const buttons = document.querySelector('#buttons');
+    const resetButton = document.createElement('button');
+    resetButton.setAttribute('id', 'reset-button');
+    resetButton.textContent = 'Reset';
+
     const dialog = document.querySelector('dialog');
     const openDialog = document.querySelector('#open-dialog');
     const closeDialog = document.querySelector('#close-dialog');
@@ -163,17 +164,13 @@ const gameController = (() => {
         console.log(data.playerOneName);
         board.classList.add('board-active');
 
+        buttons.replaceChildren(resetButton);
+
         init(
             createPlayer(data.playerOneName, data.playerOneSymbol),
             createPlayer(data.playerTwoName, data.playerTwoSymbol)
         );
     });
-    // displayController.render(gameboard.readGrid());
-
-
-    // const playGame = (e) => {
-        
-    // }
 
     const init = (p1, p2) => {
         playerOne = p1;
@@ -233,9 +230,6 @@ const gameController = (() => {
         displayController.showStatusMessage(currentPlayer);
     }
 
-    // return { init };
 })();
 
-
-// gameController.init(playerOne, playerTwo);
 
