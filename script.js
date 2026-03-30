@@ -150,6 +150,7 @@ const gameController = (() => {
     const openDialog = document.querySelector('#open-dialog');
     const closeDialog = document.querySelector('#close-dialog');
     const form = document.querySelector('#player-info');
+    const err = document.querySelector('#error-message')
 
     openDialog.addEventListener('click', () => {
         dialog.showModal()
@@ -159,13 +160,23 @@ const gameController = (() => {
     });
 
     form.addEventListener('submit', (e) => {
-        // e.preventDefault();
         const data = Object.fromEntries(new FormData(form));
-        console.log(data.playerOneName);
+        
+        if (data.playerOneName === data.playerTwoName) {
+            err.textContent = "Names cannot be the same";
+            e.preventDefault();
+            return;
+        }
+        if (data.playerOneSymbol === data.playerTwoSymbol) {
+            err.textContent = "Symbols cannot be the same"
+            e.preventDefault();
+            return;
+        }
+
         board.classList.add('board-active');
 
         buttons.replaceChildren(resetButton);
-
+        
         init(
             createPlayer(data.playerOneName, data.playerOneSymbol),
             createPlayer(data.playerTwoName, data.playerTwoSymbol)
@@ -216,7 +227,6 @@ const gameController = (() => {
         
         console.log(movesPlayed);
     };
-
 
     const resetGame = () => {
         gameboard.resetGrid();
