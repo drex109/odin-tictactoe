@@ -89,6 +89,22 @@ const displayController = (() => {
         }
     };
 
+    const scoreBoard = document.querySelector('#score-board');
+    const showScoreBoard = (p1, p2) => {
+        const scores = document.createElement('div');
+
+        const playerOneScore = document.createElement('h3');
+        playerOneScore.textContent = `${p1.name} : ${p1.getScore()}`;
+
+        const playerTwoScore = document.createElement('h3');
+        playerTwoScore.textContent = `${p2.name} : ${p2.getScore()}`;
+
+        scores.appendChild(playerOneScore);
+        scores.appendChild(playerTwoScore);
+
+        scoreBoard.replaceChildren(scores);
+    }
+
     const winMessageElem = document.querySelector('#win-message');
     const showWinMessage = (player) => {
         const winMessage = document.createElement('h1');
@@ -121,7 +137,7 @@ const displayController = (() => {
         winMessageElem.replaceChildren();
     }
     
-    return { render, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
+    return { render, showScoreBoard, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -192,6 +208,7 @@ const gameController = (() => {
         currentPlayer = playerOne;
         
         displayController.render(gameboard.readGrid());
+        displayController.showScoreBoard(playerOne, playerTwo);
         displayController.showStatusMessage(currentPlayer);
         board.addEventListener('click', boardClick);
         resetButton.addEventListener('click', resetGame);
@@ -211,6 +228,10 @@ const gameController = (() => {
 
         if (gameboard.winCheck(row, col)) {
             displayController.showWinMessage(currentPlayer);
+            
+            currentPlayer.givePoint();
+            displayController.showScoreBoard(playerOne, playerTwo);
+
             roundActive = false;
             return;
         }

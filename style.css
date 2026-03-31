@@ -156,6 +156,13 @@ dialog{
     font-size: 18px;
 }
 
+#score-board div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
 #status-message, #win-message{
     text-align: center;
     height: 0px;
