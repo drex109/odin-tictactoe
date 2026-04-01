@@ -155,12 +155,18 @@ dialog{
     padding: 9px;
     font-size: 18px;
 }
+#round{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
 
 #score-board div{
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     justify-items: center;
+    border: 1px solid white;
 }
 
 #status-message, #win-message{

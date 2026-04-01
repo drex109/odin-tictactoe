@@ -89,6 +89,14 @@ const displayController = (() => {
         }
     };
 
+    const roundElem = document.querySelector('#round');
+    const showCurrentRound = (roundNum) => {
+        const round = document.createElement('h2');
+        round.textContent = `Round ${roundNum}`;
+
+        roundElem.replaceChildren(round);
+    }
+
     const scoreBoard = document.querySelector('#score-board');
     const showScoreBoard = (p1, p2) => {
         const scores = document.createElement('div');
@@ -137,7 +145,7 @@ const displayController = (() => {
         winMessageElem.replaceChildren();
     }
     
-    return { render, showScoreBoard, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
+    return { render, showCurrentRound, showScoreBoard, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -150,6 +158,7 @@ const createPlayer = (name, symbol)  => {
 
 const gameController = (() => {
     let roundActive;
+    let currentRound;
     let movesPlayed;
     let currentPlayer;
     let playerOne;
@@ -204,10 +213,12 @@ const gameController = (() => {
         playerTwo = p2;
 
         roundActive = true;
+        currentRound = 1;
         movesPlayed = 0;
         currentPlayer = playerOne;
         
         displayController.render(gameboard.readGrid());
+        displayController.showCurrentRound(currentRound);
         displayController.showScoreBoard(playerOne, playerTwo);
         displayController.showStatusMessage(currentPlayer);
         board.addEventListener('click', boardClick);
@@ -232,12 +243,19 @@ const gameController = (() => {
             currentPlayer.givePoint();
             displayController.showScoreBoard(playerOne, playerTwo);
 
+            currentRound++;
+            console.log(currentRound);
+
             roundActive = false;
             return;
         }
 
         if (movesPlayed === 9) {
             displayController.showDrawMessage();
+            
+            currentRound++;
+            console.log(currentRound);
+            
             roundActive = false;
             return;
         }
@@ -253,6 +271,7 @@ const gameController = (() => {
         gameboard.resetGrid();
         displayController.render(gameboard.readGrid());
         displayController.clearWinMessage();
+        displayController.showCurrentRound(currentRound);
 
         roundActive = true;
         movesPlayed = 0;
