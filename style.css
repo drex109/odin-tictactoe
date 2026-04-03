@@ -43,7 +43,6 @@ body {
     display: grid;
     justify-content: center;
     align-content: center;
-    padding: 1rem;
 }
 #form-buttons{
     text-align: center;
@@ -169,8 +168,6 @@ dialog{
     border: 1px solid white;
 }
 
-#status-message, #win-message{
+#status-message.active{
     text-align: center;
-    height: 0px;
-    padding: 1rem;
 }

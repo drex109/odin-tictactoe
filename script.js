@@ -112,40 +112,39 @@ const displayController = (() => {
 
         scoreBoard.replaceChildren(scores);
     }
-
-    const winMessageElem = document.querySelector('#win-message');
-    const showWinMessage = (player) => {
-        const winMessage = document.createElement('h1');
-        
-        winMessage.textContent = `${player.name} wins the round!`;
-
-        winMessageElem.replaceChildren(winMessage);
-    }
-
     
     const statusMessageElem = document.querySelector('#status-message')
     
+    const showWinMessage = (player) => {
+        const winMessage = document.createElement('h2');
+        
+        winMessage.textContent = `${player.name} wins the round!`;
+        winMessage.style.color = 'lightgreen'
+
+        statusMessageElem.classList.add('active');
+        statusMessageElem.replaceChildren(winMessage);
+    }
+
     const showDrawMessage = () => {
-        const drawMessage = document.createElement('h1');
+        const drawMessage = document.createElement('h2');
 
         drawMessage.textContent = 'Draw!';
-
+        drawMessage.style.color = 'yellow'
+        
+        statusMessageElem.classList.add('active');
         statusMessageElem.replaceChildren(drawMessage);
     }
 
-    const showStatusMessage = (player) => {
-        const statusMessage = document.createElement('h2');
+    const showTurnMessage = (player) => {
+        const turnMessage = document.createElement('h2');
         
-        statusMessage.textContent = `${player.name}'s turn`;
+        turnMessage.textContent = `${player.name}'s turn`;
         
-        statusMessageElem.replaceChildren(statusMessage);
-    }
-
-    const clearWinMessage = () => {
-        winMessageElem.replaceChildren();
+        statusMessageElem.classList.add('active');
+        statusMessageElem.replaceChildren(turnMessage);
     }
     
-    return { render, showCurrentRound, showScoreBoard, showWinMessage, showDrawMessage, showStatusMessage, clearWinMessage };
+    return { render, showCurrentRound, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -220,7 +219,7 @@ const gameController = (() => {
         displayController.render(gameboard.readGrid());
         displayController.showCurrentRound(currentRound);
         displayController.showScoreBoard(playerOne, playerTwo);
-        displayController.showStatusMessage(currentPlayer);
+        displayController.showTurnMessage(currentPlayer);
         board.addEventListener('click', boardClick);
         resetButton.addEventListener('click', resetGame);
     };
@@ -262,7 +261,7 @@ const gameController = (() => {
         
         currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
         
-        displayController.showStatusMessage(currentPlayer);
+        displayController.showTurnMessage(currentPlayer);
         
         console.log(movesPlayed);
     };
@@ -270,14 +269,13 @@ const gameController = (() => {
     const resetGame = () => {
         gameboard.resetGrid();
         displayController.render(gameboard.readGrid());
-        displayController.clearWinMessage();
         displayController.showCurrentRound(currentRound);
 
         roundActive = true;
         movesPlayed = 0;
         currentPlayer = playerOne;
         
-        displayController.showStatusMessage(currentPlayer);
+        displayController.showTurnMessage(currentPlayer);
     }
 
 })();
