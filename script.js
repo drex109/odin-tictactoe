@@ -90,11 +90,29 @@ const displayController = (() => {
     };
 
     const roundElem = document.querySelector('#round');
-    const showCurrentRound = (roundNum) => {
+    const showCurrentRound = (currentRound) => {
         const round = document.createElement('h2');
-        round.textContent = `Round ${roundNum}`;
+        round.textContent = `Round ${currentRound}`;
 
         roundElem.replaceChildren(round);
+    }
+
+    const roundCountdownElem = document.querySelector('#countdown')
+    const roundCountdown = () => {
+        let count = 11;
+        const countdown = document.createElement('h1');
+        const timer = setInterval(() => {
+            if (count === 0) {
+                clearInterval(timer);
+                countdown.textContent = '';
+            } else {
+                count--;
+                countdown.textContent = `Next round starting... ${count}`;
+            }
+        }, 1000)
+
+        roundCountdownElem.appendChild(countdown)
+        
     }
 
     const scoreBoard = document.querySelector('#score-board');
@@ -144,7 +162,7 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(turnMessage);
     }
     
-    return { render, showCurrentRound, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
+    return { render, showCurrentRound, roundCountdown, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -241,6 +259,8 @@ const gameController = (() => {
             
             currentPlayer.givePoint();
             displayController.showScoreBoard(playerOne, playerTwo);
+
+            displayController.roundCountdown()
 
             currentRound++;
             console.log(currentRound);
