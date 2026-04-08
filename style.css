@@ -154,6 +154,12 @@ dialog{
     padding: 9px;
     font-size: 18px;
 }
+#countdown{
+    display: grid;
+    position: absolute;
+    justify-items: center;
+    align-items: center;
+}
 #round{
     display: grid;
     align-items: center;

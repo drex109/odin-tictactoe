@@ -98,20 +98,21 @@ const displayController = (() => {
     }
 
     const roundCountdownElem = document.querySelector('#countdown')
-    const roundCountdown = () => {
+    const roundCountdown = (resetGame) => {
         let count = 11;
         const countdown = document.createElement('h1');
         const timer = setInterval(() => {
             if (count === 0) {
                 clearInterval(timer);
                 countdown.textContent = '';
+                resetGame();
             } else {
                 count--;
                 countdown.textContent = `Next round starting... ${count}`;
             }
         }, 1000)
 
-        roundCountdownElem.appendChild(countdown)
+        roundCountdownElem.replaceChildren(countdown)
         
     }
 
@@ -260,12 +261,12 @@ const gameController = (() => {
             currentPlayer.givePoint();
             displayController.showScoreBoard(playerOne, playerTwo);
 
-            displayController.roundCountdown()
-
             currentRound++;
             console.log(currentRound);
 
             roundActive = false;
+
+            displayController.roundCountdown(resetGame);
             return;
         }
 
@@ -276,6 +277,8 @@ const gameController = (() => {
             console.log(currentRound);
             
             roundActive = false;
+
+            displayController.roundCountdown(resetGame);
             return;
         }
         
