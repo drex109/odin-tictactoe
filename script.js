@@ -98,10 +98,11 @@ const displayController = (() => {
     }
 
     const roundCountdownElem = document.querySelector('#countdown')
+    let timer;
     const roundCountdown = (resetGame) => {
         let count = 11;
         const countdown = document.createElement('h1');
-        const timer = setInterval(() => {
+        timer = setInterval(() => {
             if (count === 0) {
                 clearInterval(timer);
                 countdown.textContent = '';
@@ -114,6 +115,11 @@ const displayController = (() => {
 
         roundCountdownElem.replaceChildren(countdown)
         
+    }
+
+    const cancelCountdown = () => {
+        clearInterval(timer);
+        roundCountdownElem.replaceChildren('')
     }
 
     const scoreBoard = document.querySelector('#score-board');
@@ -163,7 +169,7 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(turnMessage);
     }
     
-    return { render, showCurrentRound, roundCountdown, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
+    return { render, showCurrentRound, roundCountdown, cancelCountdown, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -290,6 +296,7 @@ const gameController = (() => {
     };
 
     const resetGame = () => {
+        displayController.cancelCountdown();
         gameboard.resetGrid();
         displayController.render(gameboard.readGrid());
         displayController.showCurrentRound(currentRound);
