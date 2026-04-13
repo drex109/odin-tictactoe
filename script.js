@@ -150,6 +150,18 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(winMessage);
     }
 
+    const showFinalMessage = (p1, p2) => {
+        const finMessage = document.createElement('h2');
+
+        let player = p1.getScore() > p2.getScore() ? p1 : p2;
+
+        finMessage.textContent = `${player.name} wins the game!`;
+        finMessage.style.color = 'lightblue'
+
+        statusMessageElem.classList.add('active');
+        statusMessageElem.replaceChildren(finMessage);
+    }
+
     const showDrawMessage = () => {
         const drawMessage = document.createElement('h2');
 
@@ -169,7 +181,7 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(turnMessage);
     }
     
-    return { render, showCurrentRound, roundCountdown, cancelCountdown, showScoreBoard, showWinMessage, showDrawMessage, showTurnMessage };
+    return { render, showCurrentRound, roundCountdown, cancelCountdown, showScoreBoard, showWinMessage, showFinalMessage, showDrawMessage, showTurnMessage };
 })()
 
 const createPlayer = (name, symbol)  => {
@@ -297,6 +309,12 @@ const gameController = (() => {
 
     const resetGame = () => {
         displayController.cancelCountdown();
+        
+        if (currentRound === 6) {
+            displayController.showFinalMessage(playerOne, playerTwo);
+            return;
+        }
+        
         gameboard.resetGrid();
         displayController.render(gameboard.readGrid());
         displayController.showCurrentRound(currentRound);
