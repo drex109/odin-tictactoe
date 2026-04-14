@@ -177,3 +177,10 @@ dialog{
 #status-message.active{
     text-align: center;
 }
+
+#final-message{
+    display: grid;
+    position: absolute;
+    justify-items: center;
+    align-items: center;
+}

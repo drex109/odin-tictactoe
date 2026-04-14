@@ -150,18 +150,6 @@ const displayController = (() => {
         statusMessageElem.replaceChildren(winMessage);
     }
 
-    const showFinalMessage = (p1, p2) => {
-        const finMessage = document.createElement('h2');
-
-        let player = p1.getScore() > p2.getScore() ? p1 : p2;
-
-        finMessage.textContent = `${player.name} wins the game!`;
-        finMessage.style.color = 'lightblue'
-
-        statusMessageElem.classList.add('active');
-        statusMessageElem.replaceChildren(finMessage);
-    }
-
     const showDrawMessage = () => {
         const drawMessage = document.createElement('h2');
 
@@ -179,6 +167,30 @@ const displayController = (() => {
         
         statusMessageElem.classList.add('active');
         statusMessageElem.replaceChildren(turnMessage);
+    }
+
+    const finalMessageElem = document.querySelector('#final-message')
+    const showFinalMessage = (p1, p2) => {
+        const finMessage = document.createElement('h1');
+        let draw = false;
+        let player;
+
+        if (p1.getScore() > p2.getScore()) {
+            player = p1;
+        } else if (p2.getScore() > p1.getScore()) {
+            player = p2;
+        } else {
+            draw = true;
+        }
+
+        if (draw) {
+            finMessage.textContent = `Draw!`;
+        } else {
+            finMessage.textContent = `${player.name} wins the game!`;
+        }
+        finMessage.style.color = 'lightgreen'
+
+        finalMessageElem.replaceChildren(finMessage);
     }
     
     return { render, showCurrentRound, roundCountdown, cancelCountdown, showScoreBoard, showWinMessage, showFinalMessage, showDrawMessage, showTurnMessage };
@@ -284,6 +296,11 @@ const gameController = (() => {
 
             roundActive = false;
 
+            if (currentRound === 6) {
+                resetGame();
+                return;
+            }
+
             displayController.roundCountdown(resetGame);
             return;
         }
@@ -295,6 +312,11 @@ const gameController = (() => {
             console.log(currentRound);
             
             roundActive = false;
+
+            if (currentRound === 6) {
+                resetGame();
+                return;
+            }
 
             displayController.roundCountdown(resetGame);
             return;
