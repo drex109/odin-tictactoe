@@ -8,11 +8,8 @@ const gameboard = (() => {
     const placeSymbol = (row, col, symbol) => {
         if (grid[row][col] === '') {
             grid[row][col] = symbol;
-            console.log(grid.join('\n'));
             return true;
         } else {
-            console.log('space already taken');
-            console.log(grid.join('\n'));
             return false;
         }
     }
@@ -23,7 +20,6 @@ const gameboard = (() => {
                 grid[row][col] = '';
             }
         }
-        console.log(grid.join('\n'));
     }
 
     const winCheck = (row, col) => {
@@ -32,12 +28,10 @@ const gameboard = (() => {
             if (grid[row][0] === currentSymbol && 
                 grid[row][1] === currentSymbol && 
                 grid[row][2] === currentSymbol) {
-                    console.log('win');
                     return true;
             } else if (grid[0][col] === currentSymbol && 
                 grid[1][col] === currentSymbol && 
                 grid[2][col] === currentSymbol) {
-                    console.log('win');
                     return true;
             } 
             
@@ -45,7 +39,6 @@ const gameboard = (() => {
                 grid[0][0] === currentSymbol &&
                 grid[1][1] === currentSymbol &&
                 grid[2][2] === currentSymbol) {
-                    console.log('win');
                     return true;
             } 
 
@@ -53,7 +46,6 @@ const gameboard = (() => {
                 grid[0][2] === currentSymbol &&
                 grid[1][1] === currentSymbol &&
                 grid[2][0] === currentSymbol) {
-                    console.log('win');
                     return true;
             }
         }
@@ -292,7 +284,6 @@ const gameController = (() => {
             displayController.showScoreBoard(playerOne, playerTwo);
 
             currentRound++;
-            console.log(currentRound);
 
             roundActive = false;
 
@@ -309,7 +300,6 @@ const gameController = (() => {
             displayController.showDrawMessage();
             
             currentRound++;
-            console.log(currentRound);
             
             roundActive = false;
 
@@ -326,7 +316,6 @@ const gameController = (() => {
         
         displayController.showTurnMessage(currentPlayer);
         
-        console.log(movesPlayed);
     };
 
     const resetGame = () => {
